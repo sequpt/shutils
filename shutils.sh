@@ -24,6 +24,7 @@
 # @detail
 # Shutils is a POSIX sh script providing some utilities functions and variables
 # for the following things:
+# - Exit codes
 # - Terminal text/background color and formating
 #
 # Functions and variables starting with an underscore(e.g., _var) are for
@@ -36,6 +37,19 @@ set -u
 # Set locale to POSIX
 LC_ALL=C
 export LC_ALL
+################################################################################
+# EXIT CODES
+################################################################################
+# Success
+ERR_SUCCESS=0
+# Failure
+ERR_FAILURE=1
+# Command wasn't used correctly
+ERR_USAGE=2
+# Command can't be executed
+ERR_EXEC=126
+# Command not found
+ERR_NOCMD=127
 ################################################################################
 # TERMINAL
 # see:
