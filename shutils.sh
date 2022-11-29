@@ -54,6 +54,44 @@ ERR_NOCMD=127
 # INTERNAL UTILITIES
 ################################################################################
 #-------------------------------------------------------------------------------
+# _assert_str_not_empty()
+#-------------------------------------------------------------------------------
+# Assert that a string is not empty.
+#
+# @args
+# $1 [REQ]: Name of the variable to check passed as a string without the `$`.
+#           (see examples)
+#
+# @return
+# - Nothing
+#
+# @warning
+# - Exit with `$ERR_USAGE` if no argument is given.
+#
+# @example
+# path="/home"
+# _assert_str_not_empty "path" # OK
+# path=""
+# _assert_str_not_empty "path" # FAIL
+# path=
+# _assert_str_not_empty "path" # FAIL
+#-------------------------------------------------------------------------------
+_assert_str_not_empty() {
+    _arg_cnt="$#"
+    # Exit with `$ERR_USAGE` if number of arguments isn't 1
+    if [ "$_arg_cnt" -ne 1 ]; then
+        printf "Error: _assert_str_not_empty() needs exactly 1 argument(%d given)!" "$_arg_cnt" 1>&2
+        exit "$ERR_USAGE"
+    fi
+    _var_name="$1"
+    _var_value=""
+    eval _var_value=\"\$"$_var_name"\"
+    if [ -z "$_var_value" ]; then
+        printf "Assertion failed: '$%s' string is empty!\n" "$_var_name"
+        exit "$ERR_FAILURE"
+    fi
+}
+#-------------------------------------------------------------------------------
 # _has_cmd()
 #-------------------------------------------------------------------------------
 # Check if a given command exists and return true if it does and false
