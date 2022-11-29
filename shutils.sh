@@ -118,58 +118,6 @@ _assert_str_not_empty() {
         exit "$ERR_FAILURE"
     fi
 }
-#-------------------------------------------------------------------------------
-# _has_cmd()
-#-------------------------------------------------------------------------------
-# Check if a given command exists and return true if it does and false
-# otherwise.
-#
-# The command name and each of its arguments(if they exist) must be given as
-# separate arguments to `_has_cmd()`. Example for `ls -l -a`:
-# RIGHT: - `_has_cmd "ls" "-l" "-a"`
-#        - `_has_cmd ls -l -a`
-# WRONG: - `_has_cmd "ls -l -a"`
-#        - `_has_cmd "ls -l" "-a"`
-#        - `_has_cmd "ls" "-l -a"`
-#
-# If arguments are passed to the command, the existence of the command AND the
-# arguments are tested. In this case, `_has_cmd()` will return false if the
-# command exists but its arguments are invalid.
-#
-# @args
-# $1 [REQ]: Command name
-# $2+[OPT]: Arguments to the command
-#
-# @return
-# - @success: true
-# - @failure: false
-#
-# @warning
-# - Exit with `$ERR_USAGE` if no argument is given.
-#
-# @example
-# _has_cmd="$(_has_cmd "ls")"
-# _has_cmd="$(_has_cmd "tput" "sgr")"
-# _has_cmd "grep" && printf "Has grep: true\n"
-#-------------------------------------------------------------------------------
-_has_cmd() {
-    _arg_cnt="$#"
-    # Exit with `$ERR_USAGE` if no argument is given.
-    if [ "$_arg_cnt" -eq 0 ]; then
-        printf "Error: _has_cmd() needs at least 1 argument!\n" 1>&2
-        exit "$ERR_USAGE"
-    fi
-    _cmd="$1"
-    # Command is passed without arguments
-    if [ "$_arg_cnt" -eq 1 ]; then
-        command -v "$_cmd" > "/dev/null"
-    # Command is passed with one ore more arguments
-    else
-        shift 1
-        _args="$*"
-        command "$_cmd" "$_args" > "/dev/null" 2>&1
-    fi
-}
 ################################################################################
 # TERMINAL
 # see:
@@ -192,36 +140,36 @@ _csi="${_esc}["
 # - https://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h4-Functions-using-CSI-_-ordered-by-the-final-character-lparen-s-rparen:CSI-Pm-m.1CA7
 # - https://en.wikipedia.org/wiki/ANSI_escape_code#SGR_(Select_Graphic_Rendition)_parameters
 # Clear all formatting - CSI 0 m
-t_clr=; _has_cmd "tput" "sgr0" && t_clr="$(tput sgr0)"
+t_clr=; command tput sgr0 > "/dev/null" 2>&1 && t_clr="$(tput sgr0)"
 # Bold ON - CSI 1 m
-fg_bold=; _has_cmd tput bold && fg_bold="$(tput bold)"
+fg_bold=; command tput bold > "/dev/null" 2>&1 && fg_bold="$(tput bold)"
 # Bold OFF - CSI 22 m(same as dim off)
 fg_clr_bold="${_csi}22m"
 # Dim ON - CSI 2 m
-fg_dim=; _has_cmd tput dim && fg_dim="$(tput dim)"
+fg_dim=; command tput dim > "/dev/null" 2>&1 && fg_dim="$(tput dim)"
 # Dim OFF - CSI 22 m(same as bold off)
 fg_clr_dim="${_csi}22m"
 # Italic ON - CSI 3 m
-fg_it=; _has_cmd tput sitm && fg_it="$(tput sitm)"
+fg_it=; command tput sitm > "/dev/null" 2>&1 && fg_it="$(tput sitm)"
 # Italic OFF - CSI 23 m
-fg_clr_it=; _has_cmd tput ritm && fg_clr_it="$(tput ritm)"
+fg_clr_it=; command tput ritm > "/dev/null" 2>&1 && fg_clr_it="$(tput ritm)"
 # Underline ON - CSI 4 m
-fg_ul=; _has_cmd tput smul && fg_ul="$(tput smul)"
+fg_ul=; command tput smul > "/dev/null" 2>&1 && fg_ul="$(tput smul)"
 # Underline OFF - CSI 24 m
-fg_clr_ul=; _has_cmd tput rmul && fg_clr_ul="$(tput rmul)"
+fg_clr_ul=; command tput rmul > "/dev/null" 2>&1 && fg_clr_ul="$(tput rmul)"
 # Blink - CSI 5 m
-fg_blink=; _has_cmd tput blink && fg_blink="$(tput blink)"
+fg_blink=; command tput blink > "/dev/null" 2>&1 && fg_blink="$(tput blink)"
 # Blink OFF - CSI 25 m
 fg_clr_blink="${_csi}25m"
 # Invert text/background colors - CSI 7 m
-t_rev=; _has_cmd tput rev && t_rev="$(tput rev)"
+t_rev=; command tput rev > "/dev/null" 2>&1 && t_rev="$(tput rev)"
 # Strike ON - CSI 9 m
 fg_strike="${_csi}9m"
 # Strike OFF - CSI 29 m
 fg_clr_strike="${_csi}29m"
 
 # Check if `tput setaf` is available
-_has_tput_setaf=$(_has_cmd tput setaf)
+_has_tput_setaf=; command tput setaf > "/dev/null" 2>&1 && _has_tput_setaf=true
 # Default foreground color - CSI 39 m
 fg_default="${_csi}39m"
 # Foreground normal colors - CSI 30-37 m
@@ -277,7 +225,7 @@ fg_d_lcyan="$fg_dim$fg_lcyan"
 fg_d_white="$fg_dim$fg_white"
 
 # Check if `tput setab` is available
-_has_tput_setab="$(_has_cmd tput setab)"
+_has_tput_setab=; command tput setab > "/dev/null" 2>&1 && _has_tput_setab=true
 # Default background color - CSI 49 m
 bg_default="${_csi}49m"
 # Background colors - CSI 40-47 m
