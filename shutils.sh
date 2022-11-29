@@ -74,6 +74,7 @@ has_shasum=false;   command -v shasum   > "/dev/null" && has_shasum=true
 has_su=false;       command -v su       > "/dev/null" && has_su=true
 has_sudo=false;     command -v sudo     > "/dev/null" && has_sudo=true
 has_tar=false;      command -v tar      > "/dev/null" && has_tar=true
+has_tput=false;     command -v tput     > "/dev/null" && has_tput=true
 has_wget=false;     command -v wget     > "/dev/null" && has_wget=true
 has_xz=false;       command -v xz       > "/dev/null" && has_xz=true
 ################################################################################
