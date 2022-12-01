@@ -284,6 +284,33 @@ log_info() {
     fi
     _log_msg "$_LOG_INFO" "$@"
 }
+#-------------------------------------------------------------------------------
+# log_warning()
+#-------------------------------------------------------------------------------
+# Print a message with the `warning` level with the following format:
+# <timestamp> - <file>:<function>() - [WARNING] <message>
+# Example:
+# "2022-12-01T10:34:46+00:00 - ./test.sh:main() - [WARNING] This is a warning message"
+#
+# @args
+# $1 [OPT]: Message to log.
+# $2 [OPT]: Function name.
+#
+# @example
+# log_warning "This is a warning message" "main" # Logging a message and the function name
+# log_warning "This is a warning message"        # Logging a message only
+# log_warning "" "main"                          # Logging the function name only
+# log_warning                                    # Logging no message and no function name
+#-------------------------------------------------------------------------------
+log_warning() {
+    _arg_cnt="$#"
+    # Exit with `$ERR_USAGE` if wrong number of arguments is given
+    if [ "$_arg_cnt" -gt 2 ]; then
+        _log_msg "$_LOG_ERROR" "log_warning() needs either 0, 1 or 2 arguments($_arg_cnt given)!"
+        exit "$ERR_USAGE"
+    fi
+    _log_msg "$_LOG_WARNING" "$@"
+}
 ################################################################################
 # INTERNAL UTILITIES
 ################################################################################
