@@ -253,14 +253,8 @@ _log_msg() {
     fi
     _path="$0"
     _level="$1"
-    _msg="<No message>"
-    if [ "$_arg_cnt" -gt 1 ]; then
-        _msg="$2"
-    fi
-    _func="<Unknown function>"
-    if [ "$_arg_cnt" -eq 3 ]; then
-        _func="$3"
-    fi
+    _msg="${2:-"<No message>"}"
+    _func="${3:-"<Unknown function>"}"
     printf "%s - %s:%s() - [%s] %s\n" "$_timestamp" "$_path" "$_func" "$_level" "$_msg"
 }
 ################################################################################
