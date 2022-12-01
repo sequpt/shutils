@@ -222,6 +222,48 @@ t_bg_lmagenta=; $has_tput_setab && t_bg_lmagenta="$(tput setab 13)" # Light Mage
 t_bg_lcyan=;    $has_tput_setab && t_bg_lcyan="$(tput setab 14)"    # Light Cyan    - CSI 106 m
 t_bg_white=;    $has_tput_setab && t_bg_white="$(tput setab 15)"    # White         - CSI 107 m
 ################################################################################
+# LOGGING
+################################################################################
+_LOG_INFO="${t_b_blue}INFO${t_clr}"
+_LOG_WARNING="${t_b_yellow}WARNING${t_clr}"
+_LOG_ERROR="${t_b_red}ERROR${t_clr}"
+#-------------------------------------------------------------------------------
+# _log_msg()
+#-------------------------------------------------------------------------------
+# Print a message prefixed with a timestamp, the file and the function in which
+# the logging is done and a log level.
+# Format:
+# <timestamp> - <file>:<function>() - [<log_level>] <message>
+#
+# @args
+# $1 [REQ]: One of the `_LOG_{INFO, WARNING, ERROR}` variable.
+# $2 [OPT]: Message to log.
+# $2 [OPT]: Function name.
+#-------------------------------------------------------------------------------
+_log_msg() {
+    _arg_cnt="$#"
+    # Exit with `$ERR_USAGE` if wrong number of arguments is given
+    if [ "$_arg_cnt" -lt 1 ] || [ "$_arg_cnt" -gt 3 ]; then
+        _log_msg "$_LOG_ERROR" "_log_msg() needs either 1, 2 or 3 arguments($_arg_cnt given)!"
+        exit "$ERR_USAGE"
+    fi
+    _timestamp="<Timestamp unavailable>"
+    if [ "$has_date" = true ]; then
+        _timestamp="$(date --utc --iso-8601=seconds)"
+    fi
+    _path="$0"
+    _level="$1"
+    _msg="<No message>"
+    if [ "$_arg_cnt" -gt 1 ]; then
+        _msg="$2"
+    fi
+    _func="<Unknown function>"
+    if [ "$_arg_cnt" -eq 3 ]; then
+        _func="$3"
+    fi
+    printf "%s - %s:%s() - [%s] %s\n" "$_timestamp" "$_path" "$_func" "$_level" "$_msg"
+}
+################################################################################
 # INTERNAL UTILITIES
 ################################################################################
 #-------------------------------------------------------------------------------
