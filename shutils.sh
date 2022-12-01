@@ -257,6 +257,33 @@ _log_msg() {
     _func="${3:-"<Unknown function>"}"
     printf "%s - %s:%s() - [%s] %s\n" "$_timestamp" "$_path" "$_func" "$_level" "$_msg"
 }
+#-------------------------------------------------------------------------------
+# log_info()
+#-------------------------------------------------------------------------------
+# Print a message with the `info` level with the following format:
+# <timestamp> - <file>:<function>() - [INFO] <message>
+# Example:
+# "2022-12-01T10:34:46+00:00 - ./test.sh:main() - [INFO] Main script started"
+#
+# @args
+# $1 [OPT]: Message to log.
+# $2 [OPT]: Function name.
+#
+# @example
+# log_info "Main script started" "main" # Logging a message and the function name
+# log_info "Main script started"        # Logging a message only
+# log_info "" "main"                    # Logging the function name only
+# log_info                              # Logging no message and no function name
+#-------------------------------------------------------------------------------
+log_info() {
+    _arg_cnt="$#"
+    # Exit with `$ERR_USAGE` if wrong number of arguments is given
+    if [ "$_arg_cnt" -gt 2 ]; then
+        _log_msg "$_LOG_ERROR" "log_info() needs either 0, 1 or 2 arguments($_arg_cnt given)!"
+        exit "$ERR_USAGE"
+    fi
+    _log_msg "$_LOG_INFO" "$@"
+}
 ################################################################################
 # INTERNAL UTILITIES
 ################################################################################
