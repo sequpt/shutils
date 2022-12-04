@@ -224,7 +224,7 @@ t_bg_white=;    $has_tput_setab && t_bg_white="$(tput setab 15)"    # White     
 ################################################################################
 # LOGGING
 ################################################################################
-_LOG_INFO="${t_b_blue}INFO${t_clr}"
+_LOG_INFO="${t_b_blue}INFO$t_clr"
 _LOG_WARNING="${t_b_yellow}WARNING${t_clr}"
 _LOG_ERROR="${t_b_red}ERROR${t_clr}"
 #-------------------------------------------------------------------------------
@@ -341,43 +341,36 @@ log_error() {
     exit "$ERR_FAILURE"
 }
 ################################################################################
-# INTERNAL UTILITIES
+# ASSERT
 ################################################################################
 #-------------------------------------------------------------------------------
-# _assert_str_not_empty()
+# assert_str_not_empty()
 #-------------------------------------------------------------------------------
 # Assert that a string is not empty.
 #
 # @args
 # $1 [REQ]: Name of the variable to check passed as a string without the `$`.
 #           (see examples)
-#
-# @return
-# - Nothing
-#
-# @warning
-# - Exit with `$ERR_USAGE` if no argument is given.
+# $2 [OPT]: Function name.
 #
 # @example
 # path="/home"
-# _assert_str_not_empty "path" # OK
+# assert_str_not_empty "path" # OK
 # path=""
-# _assert_str_not_empty "path" # FAIL
+# assert_str_not_empty "path" # FAIL
 # path=
-# _assert_str_not_empty "path" # FAIL
+# assert_str_not_empty "path" # FAIL
 #-------------------------------------------------------------------------------
-_assert_str_not_empty() {
+assert_str_not_empty() {
     _arg_cnt="$#"
-    # Exit with `$ERR_USAGE` if number of arguments isn't 1
-    if [ "$_arg_cnt" -ne 1 ]; then
-        printf "Error: _assert_str_not_empty() needs exactly 1 argument(%d given)!" "$_arg_cnt" 1>&2
-        exit "$ERR_USAGE"
+    _func="${2:-}"
+    # Exit with `$ERR_USAGE` if wrong number of arguments is given
+    if [ "$_arg_cnt" -lt 1 ] || [ "$_arg_cnt" -gt 2 ]; then
+        log_error "assert_str_not_empty() needs either 1 or 2 arguments($_arg_cnt given)!" "$_func"
     fi
     _var_name="$1"
-    _var_value=""
-    eval _var_value=\"\$"$_var_name"\"
+    eval _var_value="\$$_var_name"
     if [ -z "$_var_value" ]; then
-        printf "Assertion failed: '$%s' string is empty!\n" "$_var_name"
-        exit "$ERR_FAILURE"
+        log_error "Assertion failed: '\$$_var_name' string is empty!" "$_func"
     fi
 }
