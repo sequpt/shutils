@@ -344,6 +344,39 @@ log_error() {
 # ASSERT
 ################################################################################
 #-------------------------------------------------------------------------------
+# assert_arg_cnt_eq()
+#-------------------------------------------------------------------------------
+# Assert that the number of arguments passed as `$1` is equal to the expected
+# value passed as `$2`.
+#
+# @args
+# $1 [REQ]: Number of argument.
+# $2 [REQ]: Expected value.
+# $3 [OPT]: Function name.
+#
+# @example
+# foo () {
+#     assert_arg_cnt_eq "$#" 1 "foo"
+# }
+# foo "bar"       # OK
+# foo "bar" "baz" # FAIL
+# foo             # FAIL
+#-------------------------------------------------------------------------------
+assert_arg_cnt_eq() {
+    _self="assert_arg_cnt_eq()"
+    _arg_cnt="$#"
+    _func="${3:-}"
+    # Exit with `$ERR_USAGE` if wrong number of arguments is given.
+    if [ "$_arg_cnt" -lt 2 ] && [ "$_arg_cnt" -gt 3 ]; then
+        log_error "$_self needs either 2 or 3 arguments($_arg_cnt given)!" "$_func"
+    fi
+    _actual="$1"
+    _expected="$2"
+    if [ "$_actual" -ne "$_expected" ]; then
+        log_error "Assertion failed: exactly $_expected arguments needed($_actual given)!" "$_func"
+    fi
+}
+#-------------------------------------------------------------------------------
 # assert_str_not_empty()
 #-------------------------------------------------------------------------------
 # Assert that a string is not empty.
