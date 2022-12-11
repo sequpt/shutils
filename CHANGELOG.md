@@ -13,6 +13,10 @@ which says in its summary:
 
 ## [Unreleased]
 
+## [0.1.0]
+
+(2022-11-12)
+
 ### Added
 
 - Terminal formatting
@@ -35,9 +39,9 @@ which says in its summary:
   - `t_rm_invis` to remove invisible mode.
   - `t_rm_strike` to remove strike mode.
 - Logging
-  - `log_error()`
   - `log_info()`
   - `log_warning()`
+  - `log_error()`
 - Assertion
   - `assert_arg_cnt_eq()`
   - `assert_str_not_empty()`
