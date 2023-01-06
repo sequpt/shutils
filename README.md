@@ -41,7 +41,7 @@ main() {
     log_info "Main script started" "main"
     # Print "2022-12-01T10:34:46+00:00 - ./foo.sh:main() - [WARNING] This function won't terminate normally"
     log_warning "This function won't terminate normally" "main"
-    # Print "2022-12-01T10:34:46+00:00 - ./foo.sh:main() - [ERROR] Main script started"
+    # Print "2022-12-01T10:34:46+00:00 - ./foo.sh:main() - [ERROR] Exiting early with error code -1"
     # and exit
     log_error "Exiting early with error code -1" "main"
     # Won't print

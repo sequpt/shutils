@@ -238,7 +238,7 @@ _LOG_ERROR="${t_b_red}ERROR${t_clr}"
 # @args
 # $1 [REQ]: One of the `_LOG_{INFO, WARNING, ERROR}` variable.
 # $2 [OPT]: Message to log.
-# $2 [OPT]: Function name.
+# $3 [OPT]: Function name.
 #-------------------------------------------------------------------------------
 _log_msg() {
     _arg_cnt="$#"
