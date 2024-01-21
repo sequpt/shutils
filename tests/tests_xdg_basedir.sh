@@ -20,7 +20,7 @@
 ## PERFORMANCE OF THIS SOFTWARE.
 ##
 ## @brief
-## Main script running all the tests
+## Tests for the xdg.sh script
 ################################################################################
 # Exit script on error
 set -e
@@ -30,9 +30,22 @@ set -u
 LC_ALL=C
 export LC_ALL
 ################################################################################
-main() (
-    . ./tests_xdg_basedir.sh
-    if tests_xdg_basedir; then printf "tests_xdg: OK\n"; else printf "tests_xdg: FAILED\n"; fi
-)
+tests_xdg_basedir() (
+    unset XDG_CACHE_HOME
+    unset XDG_CONFIG_DIRS
+    unset XDG_CONFIG_HOME
+    unset XDG_DATA_DIRS
+    unset XDG_DATA_HOME
+    unset XDG_STATE_HOME
 
-main "$@"
+    . "../lib/xdg_basedir.sh"
+
+    [ "$XDG_CACHE_HOME"  != "$HOME/.cache" ]                  && return 1
+    [ "$XDG_CONFIG_DIRS" != "/etc/xdg" ]                      && return 1
+    [ "$XDG_CONFIG_HOME" != "$HOME/.config" ]                 && return 1
+    [ "$XDG_DATA_DIRS"   != "/usr/local/share/:/usr/share/" ] && return 1
+    [ "$XDG_DATA_HOME"   != "$HOME/.local/share" ]            && return 1
+    [ "$XDG_STATE_HOME"  != "$HOME/.local/state" ]            && return 1
+
+    return 0
+)
