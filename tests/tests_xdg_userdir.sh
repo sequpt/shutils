@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: 0BSD
 ################################################################################
 ## @file
-## @date 21.01.2024
+## @date 27.01.2024
 ## @license
 ## BSD Zero Clause License
 ##
@@ -20,7 +20,7 @@
 ## PERFORMANCE OF THIS SOFTWARE.
 ##
 ## @brief
-## Main script running all the tests
+## Tests for the `xdg_userdir.sh` script
 ################################################################################
 # Exit script on error
 set -e
@@ -30,14 +30,26 @@ set -u
 LC_ALL=C
 export LC_ALL
 ################################################################################
-main() (
-    . ./tests_xdg_basedir.sh
-    printf "xdg_basedir: "
-    if tests_xdg_basedir; then printf "OK\n"; else printf "FAILED\n"; fi
+tests_xdg_userdir() (
+    unset XDG_DESKTOP_DIR
+    unset XDG_DOCUMENTS_DIR
+    unset XDG_DOWNLOAD_DIR
+    unset XDG_MUSIC_DIR
+    unset XDG_PICTURES_DIR
+    unset XDG_PUBLICSHARE_DIR
+    unset XDG_TEMPLATES_DIR
+    unset XDG_VIDEOS_DIR
 
-    . ./tests_xdg_userdir.sh
-    printf "xdg_userdir: "
-    if tests_xdg_userdir; then printf "OK\n"; else printf "FAILED\n"; fi
+    . "../lib/xdg_userdir.sh"
+
+    [ "$XDG_DESKTOP_DIR"     != "$HOME/Desktop" ]   && return 1
+    [ "$XDG_DOCUMENTS_DIR"   != "$HOME/Documents" ] && return 1
+    [ "$XDG_DOWNLOAD_DIR"    != "$HOME/Downloads" ] && return 1
+    [ "$XDG_MUSIC_DIR"       != "$HOME/Music" ]     && return 1
+    [ "$XDG_PICTURES_DIR"    != "$HOME/Pictures" ]  && return 1
+    [ "$XDG_PUBLICSHARE_DIR" != "$HOME/Public" ]    && return 1
+    [ "$XDG_TEMPLATES_DIR"   != "$HOME/Templates" ] && return 1
+    [ "$XDG_VIDEOS_DIR"      != "$HOME/Videos" ]    && return 1
+
+    return 0
 )
-
-main "$@"
