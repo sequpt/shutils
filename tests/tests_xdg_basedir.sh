@@ -38,7 +38,7 @@ tests_xdg_basedir() (
     unset XDG_DATA_HOME
     unset XDG_STATE_HOME
 
-    . "../lib/xdg_basedir.sh"
+    . "$1/xdg_basedir.sh"
 
     [ "$XDG_CACHE_HOME"  != "$HOME/.cache" ]                  && return 1
     [ "$XDG_CONFIG_DIRS" != "/etc/xdg" ]                      && return 1

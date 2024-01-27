@@ -40,7 +40,7 @@ tests_xdg_userdir() (
     unset XDG_TEMPLATES_DIR
     unset XDG_VIDEOS_DIR
 
-    . "../lib/xdg_userdir.sh"
+    . "$1/xdg_userdir.sh"
 
     [ "$XDG_DESKTOP_DIR"     != "$HOME/Desktop" ]   && return 1
     [ "$XDG_DOCUMENTS_DIR"   != "$HOME/Documents" ] && return 1

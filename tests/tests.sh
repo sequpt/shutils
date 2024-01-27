@@ -31,13 +31,19 @@ LC_ALL=C
 export LC_ALL
 ################################################################################
 main() (
-    . ./tests_xdg_basedir.sh
-    printf "xdg_basedir: "
-    if tests_xdg_basedir; then printf "OK\n"; else printf "FAILED\n"; fi
+    _self_path="$(realpath "$0")"
+    _tests_path="$(dirname "$_self_path")"
+    _lib_path="$(realpath "$_tests_path/../lib")"
 
-    . ./tests_xdg_userdir.sh
+    . "$_tests_path/tests_xdg_basedir.sh"
+    printf "xdg_basedir: "
+    if tests_xdg_basedir "$_lib_path"; then printf "OK\n"; else printf "FAILED\n"; fi
+
+    . "$_tests_path/tests_xdg_userdir.sh"
     printf "xdg_userdir: "
-    if tests_xdg_userdir; then printf "OK\n"; else printf "FAILED\n"; fi
+    if tests_xdg_userdir "$_lib_path"; then printf "OK\n"; else printf "FAILED\n"; fi
+
+    unset _self_path _tests_path _lib_path
 )
 
 main "$@"
