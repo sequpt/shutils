@@ -13,6 +13,16 @@ which says in its summary:
 
 ## [Unreleased]
 
+## [0.2.0]
+
+(2024-01-27)
+
+### Added
+
+- `xdg_basedir.sh`: Set `XDG_*` variables from the XDG Base Directory specification
+- `xdg_userdir.sh`: Set `XDG_*` variables from the `xdg-user-dirs` tool
+- `xdg_basedir_ext.sh`: Set non-standard `XDG_*` variables as extension of the XDG Base Directory specification
+
 ## [0.1.0]
 
 (2022-12-11)
