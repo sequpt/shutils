@@ -34,6 +34,7 @@
 ## @see
 ## - https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
 ## - https://www.freedesktop.org/software/systemd/man/latest/pam_systemd.html
+## - https://wiki.archlinux.org/title/XDG_Base_Directory
 ################################################################################
 # Exit script on error
 set -e
