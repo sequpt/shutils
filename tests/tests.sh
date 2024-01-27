@@ -32,7 +32,8 @@ export LC_ALL
 ################################################################################
 main() (
     . ./tests_xdg_basedir.sh
-    if tests_xdg_basedir; then printf "tests_xdg: OK\n"; else printf "tests_xdg: FAILED\n"; fi
+    printf "xdg_basedir: "
+    if tests_xdg_basedir; then printf "OK\n"; else printf "FAILED\n"; fi
 )
 
 main "$@"

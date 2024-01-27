@@ -20,7 +20,7 @@
 ## PERFORMANCE OF THIS SOFTWARE.
 ##
 ## @brief
-## Tests for the xdg.sh script
+## Tests for the `xdg_basedir.sh` script
 ################################################################################
 # Exit script on error
 set -e
