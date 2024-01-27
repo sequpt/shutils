@@ -43,6 +43,10 @@ main() (
     printf "xdg_userdir: "
     if tests_xdg_userdir "$_lib_path"; then printf "OK\n"; else printf "FAILED\n"; fi
 
+    . "$_tests_path/tests_xdg_basedir_ext.sh"
+    printf "xdg_basedir_ext: "
+    if tests_xdg_basedir_ext "$_lib_path"; then printf "OK\n"; else printf "FAILED\n"; fi
+
     unset _self_path _tests_path _lib_path
 )
 
