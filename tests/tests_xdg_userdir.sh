@@ -30,7 +30,7 @@ set -u
 LC_ALL=C
 export LC_ALL
 ################################################################################
-tests_xdg_userdir() (
+main() (
     unset XDG_DESKTOP_DIR
     unset XDG_DOCUMENTS_DIR
     unset XDG_DOWNLOAD_DIR
@@ -53,3 +53,5 @@ tests_xdg_userdir() (
 
     return 0
 )
+
+main "$@"

@@ -30,7 +30,7 @@ set -u
 LC_ALL=C
 export LC_ALL
 ################################################################################
-tests_xdg_basedir_ext() (
+main() (
     unset XDG_APPLICATIONS_HOME
     unset XDG_APP_HOME
     unset XDG_BACKUP_HOME
@@ -65,3 +65,5 @@ tests_xdg_basedir_ext() (
 
     return 0
 )
+
+main "$@"
