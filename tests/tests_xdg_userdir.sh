@@ -31,27 +31,27 @@ LC_ALL=C
 export LC_ALL
 ################################################################################
 main() (
-    unset XDG_DESKTOP_DIR
-    unset XDG_DOCUMENTS_DIR
-    unset XDG_DOWNLOAD_DIR
-    unset XDG_MUSIC_DIR
-    unset XDG_PICTURES_DIR
-    unset XDG_PUBLICSHARE_DIR
-    unset XDG_TEMPLATES_DIR
-    unset XDG_VIDEOS_DIR
+  unset XDG_DESKTOP_DIR
+  unset XDG_DOCUMENTS_DIR
+  unset XDG_DOWNLOAD_DIR
+  unset XDG_MUSIC_DIR
+  unset XDG_PICTURES_DIR
+  unset XDG_PUBLICSHARE_DIR
+  unset XDG_TEMPLATES_DIR
+  unset XDG_VIDEOS_DIR
 
-    . "$1/xdg_userdir.sh"
+  . "$1/xdg_userdir.sh"
 
-    [ "$XDG_DESKTOP_DIR"     != "$HOME/Desktop" ]   && return 1
-    [ "$XDG_DOCUMENTS_DIR"   != "$HOME/Documents" ] && return 1
-    [ "$XDG_DOWNLOAD_DIR"    != "$HOME/Downloads" ] && return 1
-    [ "$XDG_MUSIC_DIR"       != "$HOME/Music" ]     && return 1
-    [ "$XDG_PICTURES_DIR"    != "$HOME/Pictures" ]  && return 1
-    [ "$XDG_PUBLICSHARE_DIR" != "$HOME/Public" ]    && return 1
-    [ "$XDG_TEMPLATES_DIR"   != "$HOME/Templates" ] && return 1
-    [ "$XDG_VIDEOS_DIR"      != "$HOME/Videos" ]    && return 1
+  [ "$XDG_DESKTOP_DIR"     != "$HOME/Desktop" ]   && return 1
+  [ "$XDG_DOCUMENTS_DIR"   != "$HOME/Documents" ] && return 1
+  [ "$XDG_DOWNLOAD_DIR"    != "$HOME/Downloads" ] && return 1
+  [ "$XDG_MUSIC_DIR"       != "$HOME/Music" ]     && return 1
+  [ "$XDG_PICTURES_DIR"    != "$HOME/Pictures" ]  && return 1
+  [ "$XDG_PUBLICSHARE_DIR" != "$HOME/Public" ]    && return 1
+  [ "$XDG_TEMPLATES_DIR"   != "$HOME/Templates" ] && return 1
+  [ "$XDG_VIDEOS_DIR"      != "$HOME/Videos" ]    && return 1
 
-    return 0
+  return 0
 )
 
 main "$@"

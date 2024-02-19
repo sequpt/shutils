@@ -241,21 +241,21 @@ _LOG_ERROR="${t_b_red}ERROR${t_clr}"
 # $3 [OPT]: Function name.
 #-------------------------------------------------------------------------------
 _log_msg() {
-    _arg_cnt="$#"
-    # Exit with `$ERR_USAGE` if wrong number of arguments is given
-    if [ "$_arg_cnt" -lt 1 ] || [ "$_arg_cnt" -gt 3 ]; then
-        _log_msg "$_LOG_ERROR" "_log_msg() needs either 1, 2 or 3 arguments($_arg_cnt given)!"
-        exit "$ERR_USAGE"
-    fi
-    _timestamp="<Timestamp unavailable>"
-    if [ "$has_date" = true ]; then
-        _timestamp="$(date --utc --iso-8601=seconds)"
-    fi
-    _path="$0"
-    _level="$1"
-    _msg="${2:-"<No message>"}"
-    _func="${3:-"<Unknown function>"}"
-    printf "%s - %s:%s() - [%s] %s\n" "$_timestamp" "$_path" "$_func" "$_level" "$_msg"
+  _arg_cnt="$#"
+  # Exit with `$ERR_USAGE` if wrong number of arguments is given
+  if [ "$_arg_cnt" -lt 1 ] || [ "$_arg_cnt" -gt 3 ]; then
+    _log_msg "$_LOG_ERROR" "_log_msg() needs either 1, 2 or 3 arguments($_arg_cnt given)!"
+    exit "$ERR_USAGE"
+  fi
+  _timestamp="<Timestamp unavailable>"
+  if [ "$has_date" = true ]; then
+    _timestamp="$(date --utc --iso-8601=seconds)"
+  fi
+  _path="$0"
+  _level="$1"
+  _msg="${2:-"<No message>"}"
+  _func="${3:-"<Unknown function>"}"
+  printf "%s - %s:%s() - [%s] %s\n" "$_timestamp" "$_path" "$_func" "$_level" "$_msg"
 }
 #-------------------------------------------------------------------------------
 # log_info()
@@ -276,13 +276,13 @@ _log_msg() {
 # log_info                              # Logging no message and no function name
 #-------------------------------------------------------------------------------
 log_info() {
-    _arg_cnt="$#"
-    # Exit with `$ERR_USAGE` if wrong number of arguments is given
-    if [ "$_arg_cnt" -gt 2 ]; then
-        _log_msg "$_LOG_ERROR" "log_info() needs either 0, 1 or 2 arguments($_arg_cnt given)!"
-        exit "$ERR_USAGE"
-    fi
-    _log_msg "$_LOG_INFO" "$@"
+  _arg_cnt="$#"
+  # Exit with `$ERR_USAGE` if wrong number of arguments is given
+  if [ "$_arg_cnt" -gt 2 ]; then
+    _log_msg "$_LOG_ERROR" "log_info() needs either 0, 1 or 2 arguments($_arg_cnt given)!"
+    exit "$ERR_USAGE"
+  fi
+  _log_msg "$_LOG_INFO" "$@"
 }
 #-------------------------------------------------------------------------------
 # log_warning()
@@ -303,13 +303,13 @@ log_info() {
 # log_warning                                    # Logging no message and no function name
 #-------------------------------------------------------------------------------
 log_warning() {
-    _arg_cnt="$#"
-    # Exit with `$ERR_USAGE` if wrong number of arguments is given
-    if [ "$_arg_cnt" -gt 2 ]; then
-        _log_msg "$_LOG_ERROR" "log_warning() needs either 0, 1 or 2 arguments($_arg_cnt given)!"
-        exit "$ERR_USAGE"
-    fi
-    _log_msg "$_LOG_WARNING" "$@"
+  _arg_cnt="$#"
+  # Exit with `$ERR_USAGE` if wrong number of arguments is given
+  if [ "$_arg_cnt" -gt 2 ]; then
+    _log_msg "$_LOG_ERROR" "log_warning() needs either 0, 1 or 2 arguments($_arg_cnt given)!"
+    exit "$ERR_USAGE"
+  fi
+  _log_msg "$_LOG_WARNING" "$@"
 }
 #-------------------------------------------------------------------------------
 # log_error()
@@ -331,14 +331,14 @@ log_warning() {
 # log_error                                   # Logging no message and no function name
 #-------------------------------------------------------------------------------
 log_error() {
-    _arg_cnt="$#"
-    # Exit with `$ERR_USAGE` if wrong number of arguments is given
-    if [ "$_arg_cnt" -gt 2 ]; then
-        _log_msg "$_LOG_ERROR" "log_error() needs either 0, 1 or 2 arguments($_arg_cnt given)!"
-        exit "$ERR_USAGE"
-    fi
-    _log_msg "$_LOG_ERROR" "$@"
-    exit "$ERR_FAILURE"
+  _arg_cnt="$#"
+  # Exit with `$ERR_USAGE` if wrong number of arguments is given
+  if [ "$_arg_cnt" -gt 2 ]; then
+    _log_msg "$_LOG_ERROR" "log_error() needs either 0, 1 or 2 arguments($_arg_cnt given)!"
+    exit "$ERR_USAGE"
+  fi
+  _log_msg "$_LOG_ERROR" "$@"
+  exit "$ERR_FAILURE"
 }
 ################################################################################
 # ASSERT
@@ -363,18 +363,18 @@ log_error() {
 # foo             # FAIL
 #-------------------------------------------------------------------------------
 assert_arg_cnt_eq() {
-    _self="assert_arg_cnt_eq()"
-    _arg_cnt="$#"
-    _func="${3:-}"
-    # Exit with `$ERR_USAGE` if wrong number of arguments is given.
-    if [ "$_arg_cnt" -lt 2 ] && [ "$_arg_cnt" -gt 3 ]; then
-        log_error "$_self needs either 2 or 3 arguments($_arg_cnt given)!" "$_func"
-    fi
-    _actual="$1"
-    _expected="$2"
-    if [ "$_actual" -ne "$_expected" ]; then
-        log_error "Assertion failed: exactly $_expected arguments needed($_actual given)!" "$_func"
-    fi
+  _self="assert_arg_cnt_eq()"
+  _arg_cnt="$#"
+  _func="${3:-}"
+  # Exit with `$ERR_USAGE` if wrong number of arguments is given.
+  if [ "$_arg_cnt" -lt 2 ] && [ "$_arg_cnt" -gt 3 ]; then
+    log_error "$_self needs either 2 or 3 arguments($_arg_cnt given)!" "$_func"
+  fi
+  _actual="$1"
+  _expected="$2"
+  if [ "$_actual" -ne "$_expected" ]; then
+    log_error "Assertion failed: exactly $_expected arguments needed($_actual given)!" "$_func"
+  fi
 }
 #-------------------------------------------------------------------------------
 # assert_str_not_empty()
@@ -395,15 +395,15 @@ assert_arg_cnt_eq() {
 # assert_str_not_empty "path" # FAIL
 #-------------------------------------------------------------------------------
 assert_str_not_empty() {
-    _arg_cnt="$#"
-    _func="${2:-}"
-    # Exit with `$ERR_USAGE` if wrong number of arguments is given
-    if [ "$_arg_cnt" -lt 1 ] || [ "$_arg_cnt" -gt 2 ]; then
-        log_error "assert_str_not_empty() needs either 1 or 2 arguments($_arg_cnt given)!" "$_func"
-    fi
-    _var_name="$1"
-    eval _var_value="\$$_var_name"
-    if [ -z "$_var_value" ]; then
-        log_error "Assertion failed: '\$$_var_name' string is empty!" "$_func"
-    fi
+  _arg_cnt="$#"
+  _func="${2:-}"
+  # Exit with `$ERR_USAGE` if wrong number of arguments is given
+  if [ "$_arg_cnt" -lt 1 ] || [ "$_arg_cnt" -gt 2 ]; then
+    log_error "assert_str_not_empty() needs either 1 or 2 arguments($_arg_cnt given)!" "$_func"
+  fi
+  _var_name="$1"
+  eval _var_value="\$$_var_name"
+  if [ -z "$_var_value" ]; then
+    log_error "Assertion failed: '\$$_var_name' string is empty!" "$_func"
+  fi
 }

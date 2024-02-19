@@ -31,23 +31,23 @@ LC_ALL=C
 export LC_ALL
 ################################################################################
 main() (
-    unset XDG_CACHE_HOME
-    unset XDG_CONFIG_DIRS
-    unset XDG_CONFIG_HOME
-    unset XDG_DATA_DIRS
-    unset XDG_DATA_HOME
-    unset XDG_STATE_HOME
+  unset XDG_CACHE_HOME
+  unset XDG_CONFIG_DIRS
+  unset XDG_CONFIG_HOME
+  unset XDG_DATA_DIRS
+  unset XDG_DATA_HOME
+  unset XDG_STATE_HOME
 
-    . "$1/xdg_basedir.sh"
+  . "$1/xdg_basedir.sh"
 
-    [ "$XDG_CACHE_HOME"  != "$HOME/.cache" ]                  && return 1
-    [ "$XDG_CONFIG_DIRS" != "/etc/xdg" ]                      && return 1
-    [ "$XDG_CONFIG_HOME" != "$HOME/.config" ]                 && return 1
-    [ "$XDG_DATA_DIRS"   != "/usr/local/share/:/usr/share/" ] && return 1
-    [ "$XDG_DATA_HOME"   != "$HOME/.local/share" ]            && return 1
-    [ "$XDG_STATE_HOME"  != "$HOME/.local/state" ]            && return 1
+  [ "$XDG_CACHE_HOME"  != "$HOME/.cache" ]                  && return 1
+  [ "$XDG_CONFIG_DIRS" != "/etc/xdg" ]                      && return 1
+  [ "$XDG_CONFIG_HOME" != "$HOME/.config" ]                 && return 1
+  [ "$XDG_DATA_DIRS"   != "/usr/local/share/:/usr/share/" ] && return 1
+  [ "$XDG_DATA_HOME"   != "$HOME/.local/share" ]            && return 1
+  [ "$XDG_STATE_HOME"  != "$HOME/.local/state" ]            && return 1
 
-    return 0
+  return 0
 )
 
 main "$@"

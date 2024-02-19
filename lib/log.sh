@@ -48,21 +48,21 @@ _LOG_ERROR="$(tput bold setaf 1)ERROR$_clear"
 ## $2 [OPT]: Message to log.
 ## $3 [OPT]: Function name.
 _log_msg() {
-    _arg_cnt="$#"
-    # Exit with `$ERR_USAGE` if wrong number of arguments is given
-    if [ "$_arg_cnt" -lt 1 ] || [ "$_arg_cnt" -gt 3 ]; then
-        _log_msg "$_LOG_ERROR" "_log_msg() needs either 1, 2 or 3 arguments($_arg_cnt given)!"
-        exit 2
-    fi
-    _timestamp="<Timestamp unavailable>"
-    if command -v date > "/dev/null"; then
-        _timestamp="$(date --utc --iso-8601=seconds)"
-    fi
-    _path="$0"
-    _level="$1"
-    _msg="${2:-"<No message>"}"
-    _func="${3:-"<Unknown function>"}"
-    printf "%s - %s:%s() - [%s] %s\n" "$_timestamp" "$_path" "$_func" "$_level" "$_msg"
+  _arg_cnt="$#"
+  # Exit with `$ERR_USAGE` if wrong number of arguments is given
+  if [ "$_arg_cnt" -lt 1 ] || [ "$_arg_cnt" -gt 3 ]; then
+    _log_msg "$_LOG_ERROR" "_log_msg() needs either 1, 2 or 3 arguments($_arg_cnt given)!"
+    exit 2
+  fi
+  _timestamp="<Timestamp unavailable>"
+  if command -v date > "/dev/null"; then
+    _timestamp="$(date --utc --iso-8601=seconds)"
+  fi
+  _path="$0"
+  _level="$1"
+  _msg="${2:-"<No message>"}"
+  _func="${3:-"<Unknown function>"}"
+  printf "%s - %s:%s() - [%s] %s\n" "$_timestamp" "$_path" "$_func" "$_level" "$_msg"
 }
 
 ## log_info()
@@ -82,13 +82,13 @@ _log_msg() {
 ## log_info "" "main"                    # Logging the function name only
 ## log_info                              # Logging no message and no function name
 log_info() {
-    _arg_cnt="$#"
-    # Exit with `$ERR_USAGE` if wrong number of arguments is given
-    if [ "$_arg_cnt" -gt 2 ]; then
-        _log_msg "$_LOG_ERROR" "log_info() needs either 0, 1 or 2 arguments($_arg_cnt given)!"
-        exit 2
-    fi
-    _log_msg "$_LOG_INFO" "$@"
+  _arg_cnt="$#"
+  # Exit with `$ERR_USAGE` if wrong number of arguments is given
+  if [ "$_arg_cnt" -gt 2 ]; then
+    _log_msg "$_LOG_ERROR" "log_info() needs either 0, 1 or 2 arguments($_arg_cnt given)!"
+    exit 2
+  fi
+  _log_msg "$_LOG_INFO" "$@"
 }
 
 ## log_warning()
@@ -108,13 +108,13 @@ log_info() {
 ## log_warning "" "main"                          # Logging the function name only
 ## log_warning                                    # Logging no message and no function name
 log_warning() {
-    _arg_cnt="$#"
-    # Exit with `$ERR_USAGE` if wrong number of arguments is given
-    if [ "$_arg_cnt" -gt 2 ]; then
-        _log_msg "$_LOG_ERROR" "log_warning() needs either 0, 1 or 2 arguments($_arg_cnt given)!"
-        exit 2
-    fi
-    _log_msg "$_LOG_WARNING" "$@"
+  _arg_cnt="$#"
+  # Exit with `$ERR_USAGE` if wrong number of arguments is given
+  if [ "$_arg_cnt" -gt 2 ]; then
+    _log_msg "$_LOG_ERROR" "log_warning() needs either 0, 1 or 2 arguments($_arg_cnt given)!"
+    exit 2
+  fi
+  _log_msg "$_LOG_WARNING" "$@"
 }
 
 ## log_error()
@@ -135,12 +135,12 @@ log_warning() {
 ## log_error "" "main"                         # Logging the function name only
 ## log_error                                   # Logging no message and no function name
 log_error() {
-    _arg_cnt="$#"
-    # Exit with `$ERR_USAGE` if wrong number of arguments is given
-    if [ "$_arg_cnt" -gt 2 ]; then
-        _log_msg "$_LOG_ERROR" "log_error() needs either 0, 1 or 2 arguments($_arg_cnt given)!"
-        exit 2
-    fi
-    _log_msg "$_LOG_ERROR" "$@"
-    exit 1
+  _arg_cnt="$#"
+  # Exit with `$ERR_USAGE` if wrong number of arguments is given
+  if [ "$_arg_cnt" -gt 2 ]; then
+    _log_msg "$_LOG_ERROR" "log_error() needs either 0, 1 or 2 arguments($_arg_cnt given)!"
+    exit 2
+  fi
+  _log_msg "$_LOG_ERROR" "$@"
+  exit 1
 }

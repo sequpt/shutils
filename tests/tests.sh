@@ -31,22 +31,22 @@ LC_ALL=C
 export LC_ALL
 ################################################################################
 run_tests() (
-    _self_path="$(realpath "$0")"
-    _tests_path="$(dirname "$_self_path")"
-    _lib_path="$(realpath "$_tests_path/../lib")"
+  _self_path="$(realpath "$0")"
+  _tests_path="$(dirname "$_self_path")"
+  _lib_path="$(realpath "$_tests_path/../lib")"
 
-    printf "%s: " "$1"
-    chmod u+x "$_tests_path/tests_$1.sh"
-    if "$_tests_path/tests_$1.sh" "$_lib_path"; then
-        printf "OK\n"
-    else
-        printf "FAILED\n"
-    fi
+  printf "%s: " "$1"
+  chmod u+x "$_tests_path/tests_$1.sh"
+  if "$_tests_path/tests_$1.sh" "$_lib_path"; then
+    printf "OK\n"
+  else
+    printf "FAILED\n"
+  fi
 )
 main() (
-    run_tests "xdg_basedir"
-    run_tests "xdg_userdir"
-    run_tests "xdg_basedir_ext"
+  run_tests "xdg_basedir"
+  run_tests "xdg_userdir"
+  run_tests "xdg_basedir_ext"
 )
 
 main "$@"
