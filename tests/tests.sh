@@ -43,10 +43,12 @@ run_tests() (
     printf "FAILED\n"
   fi
 )
+
 main() (
   run_tests "xdg_basedir"
   run_tests "xdg_userdir"
   run_tests "xdg_basedir_ext"
+  run_tests "term"
 )
 
 main "$@"
