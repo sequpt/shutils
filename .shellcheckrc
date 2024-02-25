@@ -7,3 +7,4 @@ enable=deprecate-which
 enable=quote-safe-variables
 external-sources=true
 shell=sh
+source-path=SCRIPTDIR/../lib
