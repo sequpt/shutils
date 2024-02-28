@@ -32,115 +32,119 @@ LC_ALL=C
 export LC_ALL
 ################################################################################
 _clear="$(printf "\033[22;39m")"
-_LOG_INFO="$(tput bold setaf 4)INFO$_clear"
-_LOG_WARNING="$(tput bold setaf 3)WARNING$_clear"
-_LOG_ERROR="$(tput bold setaf 1)ERROR$_clear"
+SHUTILS_LOG_INFO="$(tput bold setaf 4)INFO$_clear"
+SHUTILS_LOG_WARNING="$(tput bold setaf 3)WARNING$_clear"
+SHUTILS_LOG_ERROR="$(tput bold setaf 1)ERROR$_clear"
+unset _clear
 
-## _log_msg()
+## write_log() [<log-lvl>] [<msg>] [<fn-name>]
 ##
-## Print a message prefixed with a timestamp, the file and the function in which
-## the logging is done and a log level.
-## Format:
-## <timestamp> - <file>:<function>() - [<log_level>] <message>
+## Write log to output according to the following format:
+## <timestamp> - <script-path>:<fn-name>() - [<log-lvl>] <msg>
 ##
 ## @args
-## $1 [REQ]: One of the `_LOG_{INFO, WARNING, ERROR}` variable.
-## $2 [OPT]: Message to log.
-## $3 [OPT]: Function name.
-_log_msg() {
-  _arg_cnt="$#"
-  # Exit with `$ERR_USAGE` if wrong number of arguments is given
-  if [ "$_arg_cnt" -lt 1 ] || [ "$_arg_cnt" -gt 3 ]; then
-    _log_msg "$_LOG_ERROR" "_log_msg() needs either 1, 2 or 3 arguments($_arg_cnt given)!"
-    exit 2
-  fi
-  _timestamp="<Timestamp unavailable>"
+## $1 <log-lvl> [OPT]: One of the `SHUTILS_LOG_{INFO, WARNING, ERROR}` variables
+## $2 <msg>     [OPT]: Message to write
+## $3 <fn-name> [OPT]: Name of the function logging the message
+##
+## @example
+## write_log
+## => 0000-00-00T00:00:00+00:00 - ./tests.sh:<fn-name>() - [<log-lvl>] <msg>
+##
+## write_log "$SHUTILS_LOG_INFO"
+## => 0000-00-00T00:00:00+00:00 - ./tests.sh:<fn-name>() - [INFO] <msg>
+##
+## write_log "$SHUTILS_LOG_WARNING" "Fooing the bar!"
+## => 0000-00-00T00:00:00+00:00 - ./tests.sh:<fn-name>() - [WARNING] Fooing the bar!
+##
+## write_log "$SHUTILS_LOG_ERROR" "Fooing the bar failed!" "foo"
+## => 0000-00-00T00:00:00+00:00 - ./tests.sh:foo() - [ERROR] Fooing the bar failed!
+write_log() {
+  _timestamp="<timestamp>"
   if command -v date > "/dev/null"; then
     _timestamp="$(date --utc --iso-8601=seconds)"
   fi
-  _path="$0"
-  _level="$1"
-  _msg="${2:-"<No message>"}"
-  _func="${3:-"<Unknown function>"}"
-  printf "%s - %s:%s() - [%s] %s\n" "$_timestamp" "$_path" "$_func" "$_level" "$_msg"
+  if [ "$#" -gt 3 ]; then
+    printf "%s - %s:%s() - [%s] write_log() needs between 0 and 3 arguments(%s given)!\n" \
+      "$_timestamp" "$0" "${3:-"<fn-name>"}" "$SHUTILS_LOG_WARNING" "$#" 1>&2
+    unset _timestamp
+  fi
+  printf "%s - %s:%s() - [%s] %s\n" \
+    "$_timestamp" "$0" "${3:-"<fn-name>"}" "${1:-"<log-lvl>"}" "${2:-"<msg>"}"
+  unset _timestamp
 }
 
-## log_info()
+## log_info() [<msg>] [<fn-name>]
 ##
-## Print a message with the `info` level with the following format:
-## <timestamp> - <file>:<function>() - [INFO] <message>
-## Example:
-## "2022-12-01T10:34:46+00:00 - ./test.sh:main() - [INFO] Main script started"
+## Write log to output according to the following format:
+## <timestamp> - <script-path>:<fn-name>() - [INFO] <msg>
 ##
 ## @args
-## $1 [OPT]: Message to log.
-## $2 [OPT]: Function name.
+## $1 <msg>     [OPT]: Message to write
+## $2 <fn-name> [OPT]: Name of the function logging the message
 ##
-## @example
-## log_info "Main script started" "main" # Logging a message and the function name
-## log_info "Main script started"        # Logging a message only
-## log_info "" "main"                    # Logging the function name only
-## log_info                              # Logging no message and no function name
+## @examples
+## log_info
+## => 0000-00-00T00:00:00+00:00 - ./tests.sh:<fn-name>() - [INFO] <msg>
+## log_info "Fooing the bar"
+## => 0000-00-00T00:00:00+00:00 - ./tests.sh:<fn-name>() - [INFO] Fooing the bar
+## log_info "Fooing the bar" "foo"
+## => 0000-00-00T00:00:00+00:00 - ./tests.sh:foo() - [INFO] Fooing the bar
+## log_info "" "foo"
+## => 0000-00-00T00:00:00+00:00 - ./tests.sh:foo() - [INFO]
 log_info() {
-  _arg_cnt="$#"
-  # Exit with `$ERR_USAGE` if wrong number of arguments is given
-  if [ "$_arg_cnt" -gt 2 ]; then
-    _log_msg "$_LOG_ERROR" "log_info() needs either 0, 1 or 2 arguments($_arg_cnt given)!"
-    exit 2
+  if [ "$#" -gt 2 ]; then
+    write_log "$SHUTILS_LOG_WARNING" "log_info() needs either 0, 1 or 2 arguments($# given)!" "${2:-}"
   fi
-  _log_msg "$_LOG_INFO" "$@"
+  write_log "$SHUTILS_LOG_INFO" "${1:-}" "${2:-}"
 }
 
-## log_warning()
+## log_warning() [<msg>] [<fn-name>]
 ##
-## Print a message with the `warning` level with the following format:
-## <timestamp> - <file>:<function>() - [WARNING] <message>
-## Example:
-## "2022-12-01T10:34:46+00:00 - ./test.sh:main() - [WARNING] This is a warning message"
+## Write log to output according to the following format:
+## <timestamp> - <script-path>:<fn-name>() - [WARNING] <msg>
 ##
 ## @args
-## $1 [OPT]: Message to log.
-## $2 [OPT]: Function name.
+## $1 <msg>     [OPT]: Message to write
+## $2 <fn-name> [OPT]: Name of the function logging the message
 ##
-## @example
-## log_warning "This is a warning message" "main" # Logging a message and the function name
-## log_warning "This is a warning message"        # Logging a message only
-## log_warning "" "main"                          # Logging the function name only
-## log_warning                                    # Logging no message and no function name
+## @examples
+## log_warning
+## => 0000-00-00T00:00:00+00:00 - ./tests.sh:<fn-name>() - [WARNING] <msg>
+## log_warning "Fooing the bar!"
+## => 0000-00-00T00:00:00+00:00 - ./tests.sh:<fn-name>() - [WARNING] Fooing the bar!
+## log_warning "Fooing the bar!" "foo"
+## => 0000-00-00T00:00:00+00:00 - ./tests.sh:foo() - [WARNING] Fooing the bar!
+## log_warning "" "foo"
+## => 0000-00-00T00:00:00+00:00 - ./tests.sh:foo() - [WARNING]
 log_warning() {
-  _arg_cnt="$#"
-  # Exit with `$ERR_USAGE` if wrong number of arguments is given
-  if [ "$_arg_cnt" -gt 2 ]; then
-    _log_msg "$_LOG_ERROR" "log_warning() needs either 0, 1 or 2 arguments($_arg_cnt given)!"
-    exit 2
+  if [ "$#" -gt 2 ]; then
+    write_log "$SHUTILS_LOG_WARNING" "log_warning() needs either 0, 1 or 2 arguments($# given)!" "${2:-}"
   fi
-  _log_msg "$_LOG_WARNING" "$@"
+  write_log "$SHUTILS_LOG_WARNING" "${1:-}" "${2:-}"
 }
 
-## log_error()
+## log_error() [<msg>] [<fn-name>]
 ##
-## Print an error message and exit.
-## The message has the following format:
-## `<timestamp> - <file>:<function>() - [ERROR] <message>`
-## Example:
-## `2022-12-01T10:34:46+00:00 - ./test.sh:main() - [ERROR] This is an error message``
+## Write log to output according to the following format:
+## <timestamp> - <script-path>:<fn-name>() - [ERROR] <msg>
 ##
 ## @args
-## $1 [OPT]: Message to log.
-## $2 [OPT]: Function name.
+## $1 <msg>     [OPT]: Message to write
+## $2 <fn-name> [OPT]: Name of the function logging the message
 ##
-## @example
-## log_error "This is an error message" "main" # Logging a message and the function name
-## log_error "This is an error message"        # Logging a message only
-## log_error "" "main"                         # Logging the function name only
-## log_error                                   # Logging no message and no function name
+## @examples
+## log_error
+## => 0000-00-00T00:00:00+00:00 - ./tests.sh:<fn-name>() - [ERROR] <msg>
+## log_error "Fooing the bar failed!"
+## => 0000-00-00T00:00:00+00:00 - ./tests.sh:<fn-name>() - [ERROR] Fooing the bar failed!
+## log_error "Fooing the bar failed!" "foo"
+## => 0000-00-00T00:00:00+00:00 - ./tests.sh:foo() - [ERROR] Fooing the bar failed!
+## log_error "" "foo"
+## => 0000-00-00T00:00:00+00:00 - ./tests.sh:foo() - [ERROR]
 log_error() {
-  _arg_cnt="$#"
-  # Exit with `$ERR_USAGE` if wrong number of arguments is given
-  if [ "$_arg_cnt" -gt 2 ]; then
-    _log_msg "$_LOG_ERROR" "log_error() needs either 0, 1 or 2 arguments($_arg_cnt given)!"
-    exit 2
+  if [ "$#" -gt 2 ]; then
+    write_log "$SHUTILS_LOG_WARNING" "log_error() takes between 0 and 2 arguments($# given)!" "${2:-}"
   fi
-  _log_msg "$_LOG_ERROR" "$@"
-  exit 1
+  write_log "$SHUTILS_LOG_ERROR" "${1:-}" "${2:-}" 1>&2
 }
