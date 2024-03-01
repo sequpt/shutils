@@ -12,6 +12,50 @@ which says in its summary:
 
 ## [Unreleased]
 
+## [0.3.0]
+
+(2024-03-01)
+
+### Added
+
+- Terminal formatting
+  - `t_has_smso` and `t_has_rmso` to test availability of `smso` and `rmso` capabilities
+  - `t_has_op` to test availability of `op` capability
+  - `t_fb_default` to set both foreground and background colors to their default values
+
+### Changed
+
+- Assertion
+  - Code moved to `lib/assert.sh`
+
+- Logging
+  - Code moved to `lib/log.sh`
+  - `_LOG_INFO` renamed to `SHUTILS_LOG_INFO`
+  - `_LOG_WARNING` renamed to `SHUTILS_LOG_WARNING`
+  - `_LOG_ERROR` renamed to `SHUTILS_LOG_ERROR`
+  - `_log_msg()`
+    - Renamed to `write_log()`
+    - First argument is now optional too
+  - `log_info()`, `log_warning()`, `log_error()`
+    - Doesn't exit on extra parameters anymore
+    - Print a warning message instead of an error in case of extra parameters
+    - Extra parameters are ignored
+  - `log_error()` doesn't exit anymore
+
+- Terminal formatting
+  - Code moved to `lib/term.sh`
+  - `%b` format specifier no longer needed when using `t_csi` with `printf`
+  - `_esc` and `_csi` renamed to `t_esc` and `t_csi`
+  - `_has_tput_<capname>` renamed to `t_has_<capname>`
+  - Foreground colors
+    - `t_default` renamed to `t_f_default`
+    - `t_<color>` renamed to `t_f_<color>`
+    - `t_b_<color>` renamed to `t_b<color>`
+    - `t_d_<color>` renamed to `t_d<color>`
+  - Background colors
+    - `t_bg_<color>` renamed to `t_b_<color>`
+    - `t_bg_default` renamed to `t_b_default`
+
 ## [0.2.0]
 
 (2024-01-27)
